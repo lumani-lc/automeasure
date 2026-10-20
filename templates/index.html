@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoMeasure</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header><h1>AutoMeasure</h1><span>Automatic object height &amp; width measurement</span></header>
+
+<main>
+  <section class="card stage-card">
+    <div class="toolbar">
+      <button id="btnCam">Start camera</button>
+      <button id="btnStop" class="secondary" disabled>Stop camera</button>
+      <label class="file-btn">Upload photo
+        <input type="file" id="fileInput" accept="image/*" hidden>
+      </label>
+      <label>Detection
+        <select id="mode">
+          <option value="contours" selected>Edges (any object)</option>
+          <option value="yolo">YOLO (recognise objects)</option>
+        </select>
+      </label>
+      <label>Unit
+        <select id="unit">
+          <option value="mm">mm</option>
+          <option value="cm" selected>cm</option>
+          <option value="m">m</option>
+          <option value="in">inch</option>
+          <option value="ft">feet</option>
+        </select>
+      </label>
+    </div>
+    <canvas id="stage" width="640" height="480"></canvas>
+    <video id="video" playsinline muted hidden></video>
+    <div class="toolbar">
+      <button id="btnMeasure">Measure now</button>
+      <label class="switch"><input type="checkbox" id="liveToggle"> Live measuring</label>
+      <span id="status" class="status">Start the camera or upload a photo.</span>
+    </div>
+  </section>
+
+  <aside>
+    <section class="card">
+      <h2>1. Calibrate (reference scale)</h2>
+      <p class="hint">Place a reference object of known size (e.g. a credit card, 8.56 cm) as the
+        <b>left-most</b> object, on the same surface as the items you will measure.</p>
+      <div class="toolbar">
+        <label>Longest side <input type="number" id="refSize" value="8.56" step="0.01" min="0.01"></label>
+        <span id="refUnitLabel">cm</span>
+        <button id="btnCal">Calibrate</button>
+      </div>
+      <div id="calStatus" class="status">Not calibrated &mdash; showing pixels.</div>
+    </section>
+
+    <section class="card">
+      <h2>2. Results</h2>
+      <table id="results"><thead><tr><th>#</th><th>Object</th><th>Width</th><th>Height</th></tr></thead><tbody></tbody></table>
+      <div class="toolbar">
+        <input type="text" id="label" placeholder="Label (optional)" maxlength="100">
+        <button id="btnSave">Save to history</button>
+      </div>
+    </section>
+  </aside>
+
+  <section class="card history">
+    <div class="toolbar">
+      <h2>Measurement history</h2>
+      <button id="btnExport" class="secondary">Export CSV</button>
+    </div>
+    <table id="history">
+      <thead><tr><th>Photo</th><th>Label</th><th>Width</th><th>Height</th><th>Source</th><th>Date</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>
